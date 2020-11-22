@@ -1,0 +1,9 @@
+// Col function will return the variable name for a colour
+@function col($colname, $variation: 'base') {
+	@return var(--col-#{$colname}-#{$variation});
+}
+
+// fnt does the same with font
+@function fnt($font_id) {
+	@return var(--fnt-#{$font_id});
+}
