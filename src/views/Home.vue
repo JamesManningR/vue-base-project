@@ -46,11 +46,13 @@ export default {
     ...mapState("post", ["posts"]),
   },
   methods: {
-    createPost() {
-      this.$store.dispatch("post/createPost", post);
+    async createPost() {
+      await this.$store.dispatch("post/createPost", this.post);
+      this.post = {};
     },
   },
   created() {
+    this.$store.dispatch("post/resetPost");
     this.$store.dispatch("post/fetchPosts");
   },
 };

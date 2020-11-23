@@ -55,10 +55,13 @@ export const actions = {
   async fetchPost({ commit }, id) {
     try {
       const post = await db.getPost(id);
-      commit("SET_POSTS", post);
+      commit("SET_POST", post);
     } catch (err) {
       console.log(err);
     }
+  },
+  resetPost({ commit }) {
+    commit("RESET_POST");
   },
   async updatePost({ commit }, post) {
     try {
