@@ -1,15 +1,17 @@
 <template>
-  <form>
-    <label>
-      Title
-      <input type="text" name="title" v-model="value.title" />
-    </label>
-    <label>
-      Body
-      <textarea name="body" v-model="value.body" />
-    </label>
-    <slot name="submit"></slot>
-  </form>
+  <v-container>
+    <form>
+      <v-text-field
+        label="Title"
+        type="text"
+        name="title"
+        v-model="value.title"
+      >
+      </v-text-field>
+      <v-textarea name="body" label="Body" v-model="value.body" />
+      <slot name="submit"></slot>
+    </form>
+  </v-container>
 </template>
 
 <script>
@@ -20,9 +22,9 @@ export default {
       deep: true,
       handler() {
         this.$emit("input", this.value);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

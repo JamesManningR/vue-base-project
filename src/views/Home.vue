@@ -3,13 +3,14 @@
     <h1>Posts</h1>
     <h2>Create a post</h2>
     <post-edit-form v-model="post">
-      <button
+      <v-btn
         @click.prevent="$store.dispatch('post/createPost', post)"
+        color="primary"
         slot="submit"
         type="submit"
       >
         Create
-      </button>
+      </v-btn>
     </post-edit-form>
     <h2>Heres a list of posts</h2>
     <ul>
@@ -29,21 +30,21 @@ import PostEditForm from "@/components/editPostForm";
 export default {
   name: "Home",
   components: {
-    PostEditForm
+    PostEditForm,
   },
   data() {
     return {
       post: {
         title: "",
-        body: ""
-      }
+        body: "",
+      },
     };
   },
   computed: {
-    ...mapState("post", ["posts"])
+    ...mapState("post", ["posts"]),
   },
   created() {
     this.$store.dispatch("post/fetchPosts");
-  }
+  },
 };
 </script>
