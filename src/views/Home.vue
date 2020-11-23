@@ -13,11 +13,10 @@
           Create
         </v-btn>
       </post-edit-form>
-      <h2>Heres a list of posts</h2>
+      <h2 class="display-1 mb-4">Heres a list of posts</h2>
       <v-row>
         <v-col cols="4" v-for="post in posts" :key="post._id">
-          <h2>{{ post.title }}</h2>
-          <p>{{ post.body }}</p>
+          <post-card :post="post"></post-card>
         </v-col>
       </v-row>
     </v-container>
@@ -27,12 +26,14 @@
 <script>
 import { mapState } from "vuex";
 
-import PostEditForm from "@/components/editPostForm";
+import PostEditForm from "@/components/post/PostEditForm";
+import PostCard from "@/components/post/PostCard";
 
 export default {
   name: "Home",
   components: {
     PostEditForm,
+    PostCard,
   },
   data() {
     return {
