@@ -4,7 +4,7 @@ export const namespaced = true;
 
 export const state = {
   posts: {},
-  post: {}
+  post: {},
 };
 
 export const mutations = {
@@ -18,65 +18,65 @@ export const mutations = {
     state.post = post;
   },
   UPDATE_POST(state, post) {
-    const postIndex = state.posts.findIndex(item => item.id == post._id);
+    const postIndex = state.posts.findIndex((item) => item.id == post._id);
     state.posts[postIndex] = post;
   },
   REMOVE_POSTS(state, ids) {
-    const updatedPosts = state.posts.filter(item => !ids.includes(item._id));
+    const updatedPosts = state.posts.filter((item) => !ids.includes(item._id));
     state.projects = updatedPosts;
-  }
+  },
 };
 
 export const actions = {
   createPost({ commit }, post) {
     return db
       .postPost(post)
-      .then(post => {
+      .then((post) => {
         commit("ADD_POST", post);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err.data.messege);
       });
   },
   fetchPosts({ commit }) {
     return db
       .getPosts()
-      .then(posts => {
+      .then((posts) => {
         commit("SET_POSTS", posts);
         return posts;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err.data.messege);
       });
   },
   fetchPost({ commit }, id) {
     return db
       .getPost(id)
-      .then(post => {
+      .then((post) => {
         commit("SET_POSTS", post);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   },
   updatePost({ commit }, post) {
     return db
       .updatePost(post)
-      .then(post => {
+      .then((post) => {
         commit("UPDATE_POST", post);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err.data.messege);
       });
   },
   deletePost({ commit }, post) {
     return db
       .deletePost(post._id)
-      .then(post => {
+      .then((post) => {
         commit("REMOVE_POST", [post._id]);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err.data.messege);
       });
-  }
+  },
 };

@@ -1,0 +1,74 @@
+// SQUARE - creates a square with width / max width
+@mixin square($size, $isMax: false) {
+  @if $isMax {
+    max-width: $size;
+    max-height: $size;
+  } @else {
+    width: $size;
+    height: $size;
+  }
+}
+
+@mixin padding-x($amount) {
+  padding-right: $amount;
+  padding-left: $amount;
+}
+
+@mixin padding-y($amount) {
+  padding-top: $amount;
+  padding-bottom: $amount;
+}
+
+@mixin margin-x($amount) {
+  margin-right: $amount;
+  margin-left: $amount;
+}
+
+@mixin margin-y($amount) {
+  margin-top: $amount;
+  margin-bottom: $amount;
+}
+
+// MEDIA QUERY MANAGER
+/*
+- 600px:      Phone
+600 - 900px:    Tablet portrait
+900 - 1200px:   Tablet landscape
+1800px + :      Big desktop
+$breakpoint arguement choices:
+- phone
+- tab-port
+- tab-land
+- big-desktop
+1em = 16px
+usage:
+------  @include bp(phone){
+------      *CSS RULES*
+------  }
+*/
+@mixin bp($breakpoint) {
+  @if $breakpoint == phone-lg {
+    @media only screen and (min-width: 33.75rem) {
+      @content;
+    }
+  }
+  @if $breakpoint == tablet {
+    @media only screen and (min-width: 48rem) {
+      @content;
+    }
+  }
+  @if $breakpoint == tablet-lg {
+    @media only screen and (min-width: 64rem) {
+      @content;
+    }
+  }
+  @if $breakpoint == desktop {
+    @media only screen and (min-width: 80rem) {
+      @content;
+    }
+  } @else {
+    @media only screen and (min-width: $breakpoint) {
+      @content;
+    }
+  }
+}
