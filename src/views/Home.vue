@@ -15,7 +15,7 @@
       </post-edit-form>
       <h2 class="display-1 mb-4">Heres a list of posts</h2>
       <v-row>
-        <v-col cols="4" v-for="post in posts" :key="post._id">
+        <v-col cols="4" v-for="post in posts.slice().reverse()" :key="post._id">
           <post-card :post="post"></post-card>
         </v-col>
       </v-row>
