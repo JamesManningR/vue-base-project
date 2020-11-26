@@ -8,10 +8,10 @@ export default {
   async postPost(post) {
     return axios
       .post(`${API_URL}/post`, post)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .catch(err => {
+      .catch((err) => {
         throw err.response;
       });
   },
@@ -20,10 +20,10 @@ export default {
   async getPosts() {
     return axios
       .get(`${API_URL}/post`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         throw err.response;
       });
@@ -32,10 +32,10 @@ export default {
   async getPost(id) {
     return axios
       .get(`${API_URL}/post/${id}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .catch(err => {
+      .catch((err) => {
         throw err.response;
       });
   },
@@ -44,15 +44,15 @@ export default {
     const { title, body } = post;
     const updatedPost = {
       title,
-      body
+      body,
     };
     const id = post._id;
     return axios
       .put(`${API_URL}/post/${id}`, updatedPost)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .catch(err => {
+      .catch((err) => {
         throw err.response;
       });
   },
@@ -60,11 +60,11 @@ export default {
   async deletePost(id) {
     return axios
       .delete(`${API_URL}/post/${id}`)
-      .then(res => {
+      .then((res) => {
         return res.data;
       })
-      .catch(err => {
+      .catch((err) => {
         throw err.response;
       });
-  }
+  },
 };
