@@ -1,15 +1,21 @@
 name: Deploy to Staging
 
-on: 
-  push:
-    branches: [ dev ]
+on: workflow_dispatch
     
 jobs:
   push-to-staging:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: azure/docker-login@v1
+      - name: 'Checkout Github' 
+        uses: actions/checkout@v2
+              
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Login to Azure'
+        uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.AZURE_REGISTRY_NAME }}.azurecr.io
           username: ${{ secrets.REGISTRY_USERNAME }}
@@ -17,3 +23,15 @@ jobs:
       - run: |
           docker build . -t ${{ secrets.AZURE_REGISTRY_NAME }}.azurecr.io/${{  github.event.repository.name }}:${{ github.sha }}
           docker push ${{ secrets.AZURE_REGISTRY_NAME }}.azurecr.io/${{  github.event.repository.name }}:${{ github.sha }}
+
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: jr98resourceGroup
+          dns-name-label: example-client-app
+          registry-login-server: ${{ secrets.AZURE_REGISTRY_NAME }}.azurecr.io
+          image: ${{ secrets.AZURE_REGISTRY_NAME }}.azurecr.io/${{  github.event.repository.name }}:${{ github.sha }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: ${{  github.event.repository.name }}-container
+          location: 'uksouth'

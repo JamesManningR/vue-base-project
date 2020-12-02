@@ -3,7 +3,12 @@ import db from "../../services/db.service";
 export const namespaced = true;
 
 export const state = {
-  posts: {},
+  posts: [
+    {
+      title: "",
+      body: ""
+    }
+  ],
   post: {},
 };
 
