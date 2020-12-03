@@ -1,14 +1,14 @@
 <template>
   <v-container>
-    <form @submit.prevent="updatePost">
+    <form @submit.prevent="isNew ? createPost() : updatePost()">
       <v-text-field
         label="Title"
         type="text"
         name="title"
-        v-model="updatedPost.title"
+        v-model="newPost.title"
       >
       </v-text-field>
-      <v-textarea name="body" label="Body" v-model="updatedPost.body" />
+      <v-textarea name="body" label="Body" v-model="newPost.body" />
       <slot name="submit"></slot>
     </form>
   </v-container>
@@ -16,17 +16,31 @@
 
 <script>
 export default {
-  props: { post: Object, postId: String },
+  props: {
+    isNew: {
+      type: Boolean,
+      default: false,
+    },
+    post: {
+      type: Object,
+    },
+    postId: String,
+  },
   data() {
     return {
-      updatedPost: this.post,
+      newPost: this.post
+        ? this.post
+        : {
+            title: "",
+            body: "",
+          },
     };
   },
   methods: {
     updatePost() {
       this.$store
         .dispatch("post/updatePost", {
-          post: this.updatedPost,
+          post: this.newPost,
           id: this.postId,
         })
         .catch((err) => {
@@ -34,7 +48,18 @@ export default {
           return;
         })
         .then(() => {
-          this.editMode = false;
+          this.$emit("postUpdated", true);
+        });
+    },
+    createPost() {
+      this.$store
+        .dispatch("post/createPost", this.updatePost)
+        .catch((err) => {
+          console.error(err);
+          retrurn;
+        })
+        .then(() => {
+          this.$emit("postCreated", this.updatePost);
         });
     },
   },

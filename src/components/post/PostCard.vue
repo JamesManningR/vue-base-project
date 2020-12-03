@@ -12,7 +12,12 @@
         {{ new Date(post.dateUpdated).toLocaleDateString() }}
       </time>
     </v-card-text>
-    <post-edit-form v-else :post="post" :post-id="postId">
+    <post-edit-form
+      v-else
+      @postUpdated="editMode = false"
+      :post="post"
+      :post-id="postId"
+    >
       <v-btn color="primary" slot="submit" type="submit"> Update </v-btn>
     </post-edit-form>
   </v-card>

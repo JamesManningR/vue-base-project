@@ -3,7 +3,7 @@
     <v-container>
       <h1>Posts</h1>
       <h2>Create a post</h2>
-      <post-edit-form v-model="post">
+      <post-edit-form isNew v-model="post">
         <v-btn
           @click.prevent="createPost"
           color="primary"
