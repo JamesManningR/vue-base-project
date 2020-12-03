@@ -1,14 +1,14 @@
 <template>
   <v-container>
-    <form>
+    <form @submit.prevent="updatePost">
       <v-text-field
         label="Title"
         type="text"
         name="title"
-        v-model="value.title"
+        v-model="updatedPost.title"
       >
       </v-text-field>
-      <v-textarea name="body" label="Body" v-model="value.body" />
+      <v-textarea name="body" label="Body" v-model="updatedPost.body" />
       <slot name="submit"></slot>
     </form>
   </v-container>
@@ -16,13 +16,26 @@
 
 <script>
 export default {
-  props: { value: Object },
-  watch: {
-    value: {
-      deep: true,
-      handler() {
-        this.$emit("input", this.value);
-      },
+  props: { post: Object, postId: String },
+  data() {
+    return {
+      updatedPost: this.post,
+    };
+  },
+  methods: {
+    updatePost() {
+      this.$store
+        .dispatch("post/updatePost", {
+          post: this.updatedPost,
+          id: this.postId,
+        })
+        .catch((err) => {
+          console.error(err);
+          return;
+        })
+        .then(() => {
+          this.editMode = false;
+        });
     },
   },
 };

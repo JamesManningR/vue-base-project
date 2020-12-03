@@ -40,13 +40,12 @@ export default {
       });
   },
   // Update ----------------------
-  async updatePost(post) {
+  async updatePost(post, id) {
     const { title, body } = post;
     const updatedPost = {
       title,
       body,
     };
-    const id = post._id;
     return axios
       .put(`${API_URL}/post/${id}`, updatedPost)
       .then((res) => {

@@ -8,16 +8,12 @@
       <p>
         {{ post.body }}
       </p>
+      <time>
+        {{ new Date(post.dateUpdated).toLocaleDateString() }}
+      </time>
     </v-card-text>
-    <post-edit-form v-else v-model="post">
-      <v-btn
-        @click.prevent="updatePost"
-        color="primary"
-        slot="submit"
-        type="submit"
-      >
-        Update
-      </v-btn>
+    <post-edit-form v-else :post="post" :post-id="postId">
+      <v-btn color="primary" slot="submit" type="submit"> Update </v-btn>
     </post-edit-form>
   </v-card>
 </template>
@@ -35,24 +31,13 @@ export default {
     PostEditForm,
   },
   props: {
+    postId: String,
     post: {
       title: String,
       body: String,
     },
   },
-  methods: {
-    updatePost() {
-      this.$store
-        .dispatch("post/editPost", this.post)
-        .catch((err) => {
-          console.error(err);
-          return;
-        })
-        .then(() => {
-          this.editMode = false;
-        });
-    },
-  },
+  methods: {},
 };
 </script>
 

@@ -28,9 +28,8 @@ export const mutations = {
   RESET_POST(state) {
     state.post = {};
   },
-  UPDATE_POST(state, post) {
-    const postIndex = state.posts.findIndex((item) => item.id == post._id);
-    state.posts[postIndex] = post;
+  UPDATE_POST(state, { post, id }) {
+    state.posts[id] = post;
   },
   REMOVE_POSTS(state, ids) {
     const updatedPosts = state.posts.filter((item) => !ids.includes(item._id));
@@ -40,48 +39,58 @@ export const mutations = {
 
 export const actions = {
   async createPost({ commit }, post) {
+    let createdPost
     try {
-      const post_2 = await db.postPost(post);
-      commit("ADD_POST", post_2);
-      commit("SET_POST", {});
+      createdPost = await db.postPost(post);
     } catch (err) {
-      console.log(err.data.messege);
+      throw err.data.messege;
     }
+    commit("ADD_POST", createdPost);
+    commit("SET_POST", {});
+    return createdPost;
   },
   async fetchPosts({ commit }) {
+    let posts
     try {
-      const posts = await db.getPosts();
-      commit("SET_POSTS", posts);
-      return posts;
+      posts = await db.getPosts();
     } catch (err) {
-      console.log(err.data.messege);
+      throw err.data.messege;
     }
+    commit("SET_POSTS", posts);
+    return posts;
   },
   async fetchPost({ commit }, id) {
+    let posts;
     try {
-      const post = await db.getPost(id);
-      commit("SET_POST", post);
+      post = await db.getPost(id);
     } catch (err) {
-      console.log(err);
+      throw err;
     }
+    commit("SET_POST", post);
+    return post;
   },
   resetPost({ commit }) {
     commit("RESET_POST");
   },
-  async updatePost({ commit }, post) {
+  async updatePost({ commit }, postInfo) {
+    const { post, id } = postInfo;
+    let updatedPost
     try {
-      const post_2 = await db.updatePost(post);
-      commit("UPDATE_POST", post_2);
+      updatedPost = await db.updatePost(post, id);
     } catch (err) {
-      console.log(err.data.messege);
+      throw err.data.message;
     }
+    commit("UPDATE_POST", { post, id });
+    return post;
   },
-  async deletePost({ commit }, post) {
+  async deletePost({ commit }, postId) {
+    let post;
     try {
-      const post_1 = await db.deletePost(post._id);
-      commit("REMOVE_POST", [post_1._id]);
+      post = await db.deletePost(postId);
     } catch (err) {
-      console.log(err.data.messege);
+      throw err.data.messege;
     }
+    commit("REMOVE_POST", postId);
+    return post;
   },
 };
